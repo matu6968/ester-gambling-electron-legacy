@@ -1,0 +1,22 @@
+{
+  "name": "ester-gambling",
+  "productName": "ester gambling",
+  "version": "1.0.0",
+  "description": "wanan gambl?????",
+  "main": "main.js",
+  
+  "scripts": {
+    "start": "electron .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ester gambling\"",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --prune=true --out=release-builds"
+   },
+
+  "repository": "https://github.com/matu6968/ester-gambling-electron",
+  "author": "matu6968",
+  "license": "Apache-2.0",
+
+  "devDependencies": {
+    "electron": "^22.0.0"
+  }
+}
