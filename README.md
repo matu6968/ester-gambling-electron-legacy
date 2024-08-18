@@ -21,7 +21,7 @@ This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gamblin
 ## Installation
 
 ```bash
-git clone https://github.com/mmatu6968/ester-gambling-electron.git
+git clone https://github.com/matu6968/ester-gambling-electron.git
 cd ester-gambling-electron
 npm install
 ```
