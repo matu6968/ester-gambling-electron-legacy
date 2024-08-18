@@ -16,7 +16,7 @@ This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gamblin
 
 ## Releases
 
-- [Latest Release](https://github.com/mmatu6968/ester-gambling-electron/releases)
+- [Latest Release](https://github.com/matu6968/ester-gambling-electron/releases)
 
 ## Installation
 
