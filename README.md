@@ -10,8 +10,8 @@ This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gamblin
 
 ## Downloads
 
-- [Windows (95 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-windows.zip)
-- [macOS (89 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-darwin.zip)
+- [Windows (98 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-windows.zip)
+- [macOS (93 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-darwin.zip)
 - [Linux (69 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-linux.tar.xz)
 
 ## Releases
