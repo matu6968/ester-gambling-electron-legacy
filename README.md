@@ -2,7 +2,7 @@
 
 ![Stars](https://img.shields.io/github/stars/matu6968/ester-gambling-electron?style=social)
 
-Thos project is based on the [Google Bard Electron app.](https://github.com/mantreshkhurana/Google-Bard-electron)
+This project is based on the [Google Bard Electron app.](https://github.com/mantreshkhurana/Google-Bard-electron)
 
 This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gambling), a easy way to gamble on ester (with real moni /j).
 
@@ -10,9 +10,9 @@ This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gamblin
 
 ## Downloads
 
-- [Windows (95 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-windows.zip)
-- [macOS (89 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-darwin.zip)
-- [Linux (69 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.0.0-linux.tar.xz)
+- [Windows (95 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.1.0-windows.zip)
+- [macOS (89 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.1.0-darwin.zip)
+- [Linux (69 MB)](https://github.com/mantreshkhurana/Google-Bard-electron/releases/download/1.0.0/ester-gambling-v1.1.0-linux.tar.xz)
 
 ## Releases
 
@@ -21,7 +21,7 @@ This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gamblin
 ## Installation
 
 ```bash
-git clone https://github.com/mmatu6968/ester-gambling-electron.git
+git clone https://github.com/matu6968/ester-gambling-electron.git
 cd ester-gambling-electron
 npm install
 ```

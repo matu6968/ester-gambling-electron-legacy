@@ -1,15 +1,15 @@
 {
   "name": "ester-gambling",
   "productName": "ester gambling",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "wanan gambl?????",
   "main": "main.js",
   
   "scripts": {
     "start": "electron .",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
-    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ester gambling\"",
-    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --prune=true --out=release-builds"
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/favicon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=x64 --icon=assets/icons/win/favicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ester gambling\"",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/png/favicon.png --prune=true --out=release-builds"
    },
 
   "repository": "https://github.com/matu6968/ester-gambling-electron",
