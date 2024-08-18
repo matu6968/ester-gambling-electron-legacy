@@ -2,7 +2,7 @@
 
 ![Stars](https://img.shields.io/github/stars/matu6968/ester-gambling-electron?style=social)
 
-Thos project is based on the [Google Bard Electron app.](https://github.com/mantreshkhurana/Google-Bard-electron)
+This project is based on the [Google Bard Electron app.](https://github.com/mantreshkhurana/Google-Bard-electron)
 
 This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gambling), a easy way to gamble on ester (with real moni /j).
 
