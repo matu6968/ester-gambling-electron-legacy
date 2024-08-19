@@ -1,4 +1,17 @@
 (() => {
+    function encode(data) {
+        return btoa(JSON.stringify(data));
+    }
+
+    function decode(data) {
+        try {
+            return JSON.parse(atob(data));
+        } catch (e) {
+            console.error("Error decoding data", e);
+            return null;
+        }
+    }
+
     var A = (t, n) => () => (n || t((n = {
         exports: {}
     }).exports, n), n.exports);
@@ -47,16 +60,36 @@
     $(document).ready(function() {
         console.log("You aren't here to cheat, right?");
 
-        let money = 100;
-        const spinCost = 20;
+        function loadMoney() {
+            const encodedMoney = localStorage.getItem('money');
+            const decodedMoney = decode(encodedMoney);
+            return decodedMoney && !isNaN(decodedMoney) ? parseInt(decodedMoney) : 100;
+        }
+
+        function saveMoney(amount) {
+            localStorage.setItem('money', encode(amount));
+        }
+
+        function playTaxFX() {
+            $("#tax-sound")[0].play();
+        }
+
+        let money = loadMoney();
+        const spinCost = 10;
         const jackpotPrize = 1000;
         const replenishAmount = 50;
         let replenishClicks = 0;
-        const maxReplenishClicks = 5;
+        const maxReplenishClicks = 10;
         let spinning = false;
+        let taxInterval = null;
+        let inJail = false;
+        const taxPenaltyTime = 30000;
+        const successfulRunReward = 100;
 
         function updateMoneyDisplay() {
             $("#money").text(`money $${money}`);
+            saveMoney(money);
+
             if (money <= 10) {
                 $("#spin-button").prop("disabled", true).addClass("disabled");
             } else {
@@ -68,18 +101,81 @@
             } else {
                 $("#replenish-button").hide();
             }
+
+            if (inJail) {
+                $("#spin-button").prop("disabled", true).addClass("disabled");
+            }
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function startTaxInterval() {
+            if (money > 0) {
+                taxInterval = setInterval(async () => {
+                    let taxAmount = Math.floor(Math.random() * Math.min(money, 100)) + 1;
+
+                    if (taxAmount > money) {
+                        alert("you don't have enough money to pay taxes. going to jail for non-existent money :3");
+                        inJail = true;
+                        updateMoneyDisplay();
+                        setTimeout(() => {
+                            alert("you're out of jail! be more careful with your finances next time.");
+                            inJail = false;
+                            updateMoneyDisplay();
+                        }, taxPenaltyTime);
+                    } else {
+                        playTaxFX();
+                        await delay(3000)
+                        
+                        let userGuess = prompt(`tax time :3 your amount to pay is: guess :>`);
+
+                        if (userGuess !== null) {
+                            userGuess = parseInt(userGuess);
+                            
+                            if (userGuess === money) {
+                                alert("you smart mf, you're going to jail for that.");
+                                inJail = true;
+                                updateMoneyDisplay();
+                                setTimeout(() => {
+                                    alert("you're out of jail!");
+                                    inJail = false;
+                                    updateMoneyDisplay();
+                                }, taxPenaltyTime);
+                            } else if (userGuess >= taxAmount) {
+                                alert(`you paid your taxes!!!! you paid: $${taxAmount}. +$100 for the IRS being happy.`);
+                                money += successfulRunReward;
+                                money -= taxAmount;
+                                saveMoney(money);
+                            } else {
+                                alert(`you guessed too low, it was: $${taxAmount}. you're going to jail.`);
+                                inJail = true;
+                                updateMoneyDisplay();
+                                setTimeout(() => {
+                                    alert("you're out of jail. guess the right amount next time.");
+                                    inJail = false;
+                                    updateMoneyDisplay();
+                                }, taxPenaltyTime);
+                            }
+                            updateMoneyDisplay();
+                        }
+                    }
+                }, 120000);
+            }
         }
 
         $("#spin-button").on("click", function() {
-            if (spinning) return;
+            if (spinning || inJail) return;
 
             if (money < spinCost) {
-                alert("broke bitch cant continue gambling, you can just refresh or smmth");
+                alert("broke bitch can't continue gambling. you can refresh or wait for taxes and pray you get money.");
                 updateMoneyDisplay();
                 return;
             }
 
             money -= spinCost;
+            saveMoney(money);
             updateMoneyDisplay();
             spinning = true;
 
@@ -87,7 +183,7 @@
                 $reel2 = $("#reel2"),
                 $reel3 = $("#reel3"),
                 $resultMessage = $("#result-message"),
-                messages = ["fuck you imagine not winning", "your fucking awful", "you should jump", "by your standards, just keep going.", "99% of gamblers quit before they win big!!"];
+                messages = ["fuck you, imagine not winning", "you're fucking awful", "you should jump", "by your standards, just keep going.", "99% of gamblers quit before they win big!!"];
             $resultMessage.text("");
             let symbols = ["7", "BAR", "\u{1F352}", "\u{1F48E}", "1", "2", "3", "4", "5", "6"];
 
@@ -133,9 +229,10 @@
                 if (checkWin(result1, result2, result3)) {
                     $resultMessage.text("777 big win");
                     money += jackpotPrize;
+                    saveMoney(money);
                     playSoundFX();
                 } else {
-                    playLoseFX()
+                    playLoseFX();
                     $resultMessage.html(messages[Math.floor(Math.random() * messages.length)]);
                 }
                 updateMoneyDisplay();
@@ -147,7 +244,7 @@
                     ["BAR", "BAR", "\u{1F352}"],
                     ["BAR", "\u{1F352}", "BAR"],
                     ["\u{1F352}", "BAR", "\u{1F352}"],
-                    ["\u{1F352}", "\u{1F352}", "BAR"],
+                    ["\u{1F352}", "BAR", "BAR"],
                     ["\u{1F352}", "\u{1F352}", "\u{1F352}"],
                     ["7", "7", "7"],
                     ["BAR", "BAR", "BAR"],
@@ -169,6 +266,7 @@
             if (money <= 10 && replenishClicks < maxReplenishClicks) {
                 money += replenishAmount;
                 replenishClicks++;
+                saveMoney(money);
                 updateMoneyDisplay();
             }
             if (replenishClicks >= maxReplenishClicks) {
@@ -176,6 +274,7 @@
             }
         });
 
+        startTaxInterval();
         updateMoneyDisplay();
     });
 })();
