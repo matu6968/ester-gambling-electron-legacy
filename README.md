@@ -8,7 +8,7 @@ This is a desktop app for [ester gambling](https://n1d3v.github.io/ester-gamblin
 
 Note: This does not have working tax system in this version aka it means you don't have to pay them.
 
-![Screenshot](https://raw.githubusercontent.com/matu6968/ester-gambling-electron-legacy/screenshots/screenshot-1.png)
+![Screenshot](https://raw.githubusercontent.com/matu6968/ester-gambling-electron-legacy/stable/screenshots/screenshot-1.png)
 
 ## Downloads
 
