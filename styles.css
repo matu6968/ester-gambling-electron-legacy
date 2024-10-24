@@ -47,9 +47,10 @@ h1 {
 }
 
 .reel {
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.25s linear;
     display: flex;
     flex-direction: column;
+    transform: translateY(0);
 }
 
 .slot {
@@ -63,7 +64,7 @@ h1 {
     color: #e74c3c;
 }
 
-#spin-button, #replenish-button {
+#spin-button, #rob-button {
     padding: 10px 20px;
     font-size: 18px;
     font-family: 'Segoe UI', sans-serif;

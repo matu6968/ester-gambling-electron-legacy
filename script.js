@@ -77,7 +77,9 @@
         let money = loadMoney();
         const spinCost = 10;
         const jackpotPrize = 1000;
-        const replenishAmount = 50;
+        const robberySuccessRewardMin = 100;
+        const robberySuccessRewardMax = 500;
+        const robberyFailureReward = 50;
         let replenishClicks = 0;
         const maxReplenishClicks = 10;
         let spinning = false;
@@ -96,11 +98,7 @@
                 $("#spin-button").prop("disabled", false).removeClass("disabled");
             }
 
-            if (money <= 10 && replenishClicks < maxReplenishClicks) {
-                $("#replenish-button").show();
-            } else {
-                $("#replenish-button").hide();
-            }
+            $("#rob-button").toggle(money <= 10 && replenishClicks < maxReplenishClicks);
 
             if (inJail) {
                 $("#spin-button").prop("disabled", true).addClass("disabled");
@@ -117,7 +115,7 @@
                     let taxAmount = Math.floor(Math.random() * Math.min(money, 100)) + 1;
 
                     if (money < taxAmount) {
-                        let outrunIRS = confirm("you don't have enough money to pay taxes. do you want to try and outrun the IRS?");
+                        let outrunIRS = confirm("are you sure you want to try to outrun the IRS? (ok to try to outrun, cancel to go to jail)");
                         if (outrunIRS) {
                             alert("you managed to outrun the IRS... this time. no money was deducted. +$100 for swag");
                             money += successfulRunReward;
@@ -166,8 +164,8 @@
                                 money -= taxAmount;
                                 saveMoney(money);
                             } else {
-                                alert(`you guessed too low, it was: $${taxAmount}. try to outrun the IRS?`);
-                                let outrunIRS = confirm("you guessed too low, do you want to try and outrun the IRS?");
+                                alert(`you guessed too low, it was: $${taxAmount}. do you want try to outrun the IRS?`);
+                                let outrunIRS = confirm("are you sure you want to try to outrun the IRS? (ok to try to outrun, cancel to go to jail");
                                 if (outrunIRS) {
                                     alert("you managed to outrun the IRS... this time. no money was deducted. +$100 for swag");
                                     money += successfulRunReward;
@@ -187,7 +185,7 @@
                     }
                 }, 120000);
             }
-        }        
+        }
 
         $("#spin-button").on("click", function() {
             if (spinning || inJail) return;
@@ -207,34 +205,55 @@
                 $reel2 = $("#reel2"),
                 $reel3 = $("#reel3"),
                 $resultMessage = $("#result-message"),
-                messages = ["fuck you, imagine not winning", "you're fucking awful", "you should jump", "by your standards, just keep going.", "99% of gamblers quit before they win big!!"];
+                messages = ["imagine not winning", "you're awful", "you should try again", "by your standards, just keep going.", "99% of gamblers quit before they win big!!"];
             $resultMessage.text("");
             let symbols = ["7", "BAR", "\u{1F352}", "\u{1F48E}", "1", "2", "3", "4", "5", "6"];
 
             function spinReel($reel, delay, spins) {
                 return new Promise(resolve => {
+                    const slotHeight = $reel.children().first().outerHeight();
+                    const totalHeight = slotHeight * $reel.children().length;
                     let count = 0;
-
-                    function animate() {
-                        count++;
-                        $reel.css("transform", "translateY(-60px)");
-                        setTimeout(() => {
-                            $reel.append($reel.children().first());
-                            $reel.css("transform", "translateY(0)");
-                            if (count < spins) {
-                                setTimeout(animate, delay);
-                            } else {
-                                $reel.children().each((index, child) => {
-                                    $(child).text(symbols[Math.floor(w.random() * symbols.length)]);
-                                });
-                                resolve($reel.children().eq(1).text());
-                            }
-                        }, 100);
+                    
+                    let sequence = [0, -60, -120, -180];
+                    let currentIndex = 0;
+                    
+                    const clickSound = document.getElementById("click-sound");
+                    clickSound.volume = 0.1;
+            
+                    function playClickSound() {
+                        clickSound.currentTime = 0;
+                        clickSound.play();
                     }
-                    animate();
+            
+                    function updatePosition() {
+                        if (currentIndex >= sequence.length) {
+                            $reel.css("transform", "translateY(0)");
+                            $reel.append($reel.children().first());
+                            setTimeout(() => {
+                                if (count < spins) {
+                                    count++;
+                                    currentIndex = 0;
+                                    updatePosition();
+                                } else {
+                                    $reel.children().each((index, child) => {
+                                        $(child).text(symbols[Math.floor(w.random() * symbols.length)]);
+                                    });
+                                    resolve($reel.children().eq(1).text());
+                                }
+                            }, delay);
+                        } else {
+                            $reel.css("transform", `translateY(${sequence[currentIndex]}px)`);
+                            playClickSound();
+                            currentIndex++;
+                            setTimeout(updatePosition, delay);
+                        }
+                    }
+            
+                    updatePosition();
                 });
-            }
-
+            }            
+            
             function playSoundFX() {
                 $("#winfx-sound")[0].play();
                 setTimeout(() => {
@@ -247,9 +266,9 @@
             }
 
             async function spin() {
-                let result1 = await spinReel($reel1, 100, 10),
-                    result2 = await spinReel($reel2, 100, 10),
-                    result3 = await spinReel($reel3, 100, 10);
+                let result1 = await spinReel($reel1, 100, 3),
+                    result2 = await spinReel($reel2, 100, 3),
+                    result3 = await spinReel($reel3, 100, 3);
                 if (checkWin(result1, result2, result3)) {
                     $resultMessage.text("777 big win");
                     money += jackpotPrize;
@@ -264,38 +283,48 @@
             }
 
             function checkWin(result1, result2, result3) {
-                let winningPatterns = [
-                    ["BAR", "BAR", "\u{1F352}"],
-                    ["BAR", "\u{1F352}", "BAR"],
-                    ["\u{1F352}", "BAR", "\u{1F352}"],
-                    ["\u{1F352}", "BAR", "BAR"],
-                    ["\u{1F352}", "\u{1F352}", "\u{1F352}"],
-                    ["7", "7", "7"],
-                    ["BAR", "BAR", "BAR"],
-                    ["1", "1", "1"],
-                    ["2", "2", "2"],
-                    ["3", "3", "3"],
-                    ["4", "4", "4"],
-                    ["5", "5", "5"],
-                    ["6", "6", "6"],
-                    ["\u{1F48E}", "\u{1F48E}", "\u{1F48E}"]
-                ];
-                return winningPatterns.some(pattern => pattern[0] === result1 && pattern[1] === result2 && pattern[2] === result3);
+                const winningPatterns = {
+                    "BAR_BAR_🍒": true,
+                    "BAR_🍒_BAR": true,
+                    "🍒_BAR_🍒": true,
+                    "🍒_BAR_BAR": true,
+                    "🍒_🍒_🍒": true,
+                    "7_7_7": true,
+                    "BAR_BAR_BAR": true,
+                    "1_1_1": true,
+                    "2_2_2": true,
+                    "3_3_3": true,
+                    "4_4_4": true,
+                    "5_5_5": true,
+                    "6_6_6": true,
+                    "💎_💎_💎": true
+                };
+                return winningPatterns[`${result1}_${result2}_${result3}`] || false;
             }
 
             spin();
         });
 
-        $("#replenish-button").on("click", function() {
-            if (money <= 10 && replenishClicks < maxReplenishClicks) {
-                money += replenishAmount;
-                replenishClicks++;
-                saveMoney(money);
-                updateMoneyDisplay();
+        $("#rob-button").on("click", function() {
+            if (inJail) {
+                alert("you're in jail! no robbing banks for you.");
+                return;
             }
-            if (replenishClicks >= maxReplenishClicks) {
-                $(this).hide();
+
+            const successChance = 0.25;
+            const isSuccess = Math.random() < successChance;
+
+            if (isSuccess) {
+                const reward = Math.floor(Math.random() * (robberySuccessRewardMax - robberySuccessRewardMin + 1)) + robberySuccessRewardMin;
+                money += reward;
+                alert(`success! you robbed the bank and got $${reward}.`);
+            } else {
+                money += robberyFailureReward;
+                alert(`you failed! you tried to rob the bank but got $${robberyFailureReward} for trying.`);
             }
+
+            saveMoney(money);
+            updateMoneyDisplay();
         });
 
         startTaxInterval();

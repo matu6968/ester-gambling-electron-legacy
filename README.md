@@ -12,9 +12,9 @@ Note: This does not have working tax system in this version aka it means you don
 
 ## Downloads
 
-- [Windows (93 MB)](https://github.com/matu6968/ester-gambling-electron/releases/download/1.2.1/ester-gambling-legacy-windows-1.2.1.zip)
-- [macOS (89 MB)](https://github.com/matu6968/ester-gambling-electron/releases/download/1.2.1/ester-gambling-legacy-darwin-1.2.1.zip)
-- [Linux (66 MB)](https://github.com/matu6968/ester-gambling-electron/releases/download/1.2.1/ester-gambling-legacy-linux-1.2.1.tar.xz)
+- [Windows (97 MB)](https://github.com/matu6968/ester-gambling-electron-legacy/releases/download/1.1.0/ester-gambling-legacy-windows-1.1.0.zip)
+- [macOS (92 MB)](https://github.com/matu6968/ester-gambling-electron-legacy/releases/download/1.1.0/ester-gambling-legacy-darwin-1.1.0.zip)
+- [Linux (69 MB)](https://github.com/matu6968/ester-gambling-electron-legacy/releases/download/1.1.0/ester-gambling-legacy-linux-1.1.0.tar.xz)
 
 ## Releases
 
